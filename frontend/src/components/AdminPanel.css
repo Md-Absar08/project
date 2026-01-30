@@ -1,0 +1,91 @@
+.admin-panel {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.admin-panel h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+  text-align: center;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  text-align: center;
+}
+
+.admin-table th {
+  background: #f8f9fa;
+  color: #333;
+  font-weight: 600;
+}
+
+.admin-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.admin-table select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.admin-table button {
+  padding: 6px 12px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-table button:hover {
+  background: #c0392b;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .admin-table {
+    font-size: 0.8rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 8px;
+  }
+
+  .admin-panel {
+    padding: 1rem;
+  }
+}
+
+/* Status colors */
+.status-select.submitted {
+  background: #3498db; /* blue */
+  color: #fff;
+}
+
+.status-select.in-review {
+  background: #f1c40f; /* yellow */
+  color: #fff;
+}
+
+.status-select.approved {
+  background: #2ecc71; /* green */
+  color: #fff;
+}
