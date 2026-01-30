@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Spotify</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        header {
+            background-color: #1DB954;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .playlist {
+            width: 1000px;
+            display: flex;            
+        }
+
+        .playlist-item {
+            background-color: #282828;
+            width: 300px;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .playlist-item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .playlist-item h3 {
+            font-size: 16px;
+            margin: 15px 0 10px 0;
+        }
+
+        .playlist-item p {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #282828;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+        }
+
+        footer a:hover {
+            color: #1DB954;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fab fa-spotify"></i> Spotify</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Search</a>
+            <a href="#">Library</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Popular Songs</h2>
+        <div class="playlist">
+            <div class="playlist-item">
+                <img src="gs.jpg" alt="Playlist 1">
+                <h3>Golden sparrow</h3>
+                <p>2024's song</p>
+                <audio src="Golden Sparrow.mp3" controls></audio><br>
+            </div>
+            <div class="playlist-item">
+                <img src="mattapic.jpg" alt="Playlist 2">
+                <h3>Matta</h3>
+                <p>G.O.A.T</p>
+                <audio src="MATTA.mp3" controls></audio><br>
+            </div>
+            <div class="playlist-item">
+                <img src="until.jpg" alt="Playlist 3">
+                <h3>Until I found u</h3>
+                <p>Stephen Sanchez</p>
+                <audio src="Until-I-Found-You(PagalWorld).mp3" controls></audio><br>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+    </footer>
+</body>
+</html>
+

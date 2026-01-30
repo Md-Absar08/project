@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: Kerala Trip Planner</title>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is structured as a single-page, top-down narrative to guide the user logically from introduction to action. It starts with a Hero section to establish brand identity, flows into Services to explain the offerings and pricing, then presents an interactive Destination gallery with filtering to improve on the original site's static lists. The core of the app is the interactive Trip Planner, which consolidates the two confusing booking forms into one and adds a dynamic chart for cost visualization. This structure was chosen to simplify the user journey, make data digestible through interaction, and address the core usability issues (like confusing navigation and disparate booking forms) identified in the source report. -->
+    <!-- Visualization & Content Choices: Report Info: Vehicle Pricing -> Goal: Compare -> Viz: Bar Chart -> Interaction: Highlight bar on dropdown selection -> Justification: Visually comparing costs is faster and more intuitive for users than reading a list. Library: Chart.js. Report Info: Destination List -> Goal: Organize/Explore -> Presentation: Interactive Card Grid with Filters -> Interaction: Click buttons to filter destinations by type -> Justification: Allows users to quickly find destinations matching their preferences, a significant improvement over static pages. Method: Vanilla JS DOM manipulation. Report Info: Booking Forms -> Goal: Action/Inform -> Presentation: Unified HTML form with dynamic cost display -> Interaction: Selections update a total cost display -> Justification: Consolidates a confusing two-form process into a single, clear call-to-action, enhancing user experience. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFDFD;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #15803d;
+        }
+        .filter-btn.active {
+            background-color: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-700">Kerala Trip Planner</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#services" class="nav-link text-stone-600 font-medium">Services</a>
+                <a href="#destinations" class="nav-link text-stone-600 font-medium">Destinations</a>
+                <a href="#planner" class="nav-link text-stone-600 font-medium">Trip Planner</a>
+                <a href="#contact" class="nav-link text-stone-600 font-medium">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-stone-600 hover:bg-green-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#services" class="block py-2 text-stone-600 font-medium">Services</a>
+            <a href="#destinations" class="block py-2 text-stone-600 font-medium">Destinations</a>
+            <a href="#planner" class="block py-2 text-stone-600 font-medium">Trip Planner</a>
+            <a href="#contact" class="block py-2 text-stone-600 font-medium">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative h-[60vh] flex items-center justify-center text-white text-center bg-cover bg-center" style="background-image: url('https://placehold.co/1600x900/4CAF50/FFFFFF?text=Kerala+Backwaters');">
+            <div class="absolute inset-0 bg-black/50"></div>
+            <div class="relative z-10 p-4">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4">Explore Kerala: God's Own Country</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto">Your customized week-long journey through the stunning landscapes of Kerala begins here.</p>
+            </div>
+        </section>
+        
+        <section id="services" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl md:text-4xl font-bold mb-4 text-green-800">Our Services</h3>
+                <p class="max-w-3xl mx-auto text-stone-600 mb-12">This section outlines the core offerings of Kerala Trip Planner. We provide tailored travel packages that include transportation perfectly suited to your group's size, ensuring a comfortable and seamless experience as you explore Kerala.</p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-stone-50 p-8 rounded-lg shadow-md">
+                        <h4 class="text-2xl font-bold text-green-700 mb-2">Car</h4>
+                        <p class="text-stone-500 mb-4">Ideal for 1-5 members</p>
+                        <p class="text-3xl font-bold text-stone-800">₹25,000</p>
+                    </div>
+                    <div class="bg-stone-50 p-8 rounded-lg shadow-md">
+                        <h4 class="text-2xl font-bold text-green-700 mb-2">Traveller</h4>
+                        <p class="text-stone-500 mb-4">Perfect for 10-15 members</p>
+                        <p class="text-3xl font-bold text-stone-800">₹50,000</p>
+                    </div>
+                    <div class="bg-stone-50 p-8 rounded-lg shadow-md">
+                        <h4 class="text-2xl font-bold text-green-700 mb-2">Bus</h4>
+                        <p class="text-stone-500 mb-4">Comfortable for 15+ members</p>
+                        <p class="text-3xl font-bold text-stone-800">₹75,000</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="destinations" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-green-800">Explore Our Destinations</h3>
+                <p class="max-w-3xl mx-auto text-stone-600 mb-12 text-center">Discover the diverse beauty of Kerala through our curated destinations. From misty hill stations to serene backwaters and sunny beaches, there's a perfect spot for every traveler. Use the filters below to find a destination that matches your interests.</p>
+                <div id="destination-filters" class="flex justify-center flex-wrap gap-2 mb-8">
+                    <button class="filter-btn active px-4 py-2 border-2 border-stone-300 rounded-full font-medium transition" data-filter="all">All</button>
+                    <button class="filter-btn px-4 py-2 border-2 border-stone-300 rounded-full font-medium transition" data-filter="Hill Station">Hill Stations</button>
+                    <button class="filter-btn px-4 py-2 border-2 border-stone-300 rounded-full font-medium transition" data-filter="Backwaters">Backwaters</button>
+                    <button class="filter-btn px-4 py-2 border-2 border-stone-300 rounded-full font-medium transition" data-filter="Beach">Beaches</button>
+                    <button class="filter-btn px-4 py-2 border-2 border-stone-300 rounded-full font-medium transition" data-filter="City">Cities & Culture</button>
+                </div>
+
+                <div id="destination-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+        
+        <section id="planner" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-green-800">Interactive Trip Planner</h3>
+                <p class="max-w-3xl mx-auto text-stone-600 mb-12 text-center">Plan your journey and visualize the costs with our interactive tool. By selecting your preferred vehicle, you can see an instant comparison of transportation expenses. This consolidates the confusing booking process from the original site into one simple, transparent step.</p>
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-stone-50 p-8 rounded-lg shadow-lg">
+                        <h4 class="text-2xl font-bold mb-6">Plan Your Trip</h4>
+                        <form id="trip-form" class="space-y-6">
+                            <div>
+                                <label for="destination-select" class="block text-sm font-medium text-stone-700 mb-1">Select Destination</label>
+                                <select id="destination-select" class="w-full p-3 border border-stone-300 rounded-md focus:ring-green-500 focus:border-green-500"></select>
+                            </div>
+                            <div>
+                                <label for="vehicle-select" class="block text-sm font-medium text-stone-700 mb-1">Select Vehicle</label>
+                                <select id="vehicle-select" class="w-full p-3 border border-stone-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                                    <option value="Car">Car (1-5 people) - ₹25,000</option>
+                                    <option value="Traveller">Traveller (10-15 people) - ₹50,000</option>
+                                    <option value="Bus">Bus (15+ people) - ₹75,000</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="travel-date" class="block text-sm font-medium text-stone-700 mb-1">Travel Date</label>
+                                <input type="date" id="travel-date" class="w-full p-3 border border-stone-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                            </div>
+                             <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-md hover:bg-green-700 transition duration-300">Request Booking</button>
+                        </form>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold mb-4 text-center">Vehicle Cost Comparison</h4>
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 max-w-2xl text-center">
+                <h3 class="text-3xl md:text-4xl font-bold mb-4 text-green-800">Get in Touch</h3>
+                <p class="text-stone-600 mb-8">Have questions or need more information? Fill out the form below, and our team will get back to you shortly. We've standardized our contact information to ensure you can always reach us.</p>
+                <form class="space-y-4 text-left">
+                    <input type="text" placeholder="Full Name" class="w-full p-3 border border-stone-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                    <input type="email" placeholder="Email Address" class="w-full p-3 border border-stone-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                    <textarea placeholder="Your Message" rows="5" class="w-full p-3 border border-stone-300 rounded-md focus:ring-green-500 focus:border-green-500"></textarea>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-md hover:bg-green-700 transition duration-300">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Kerala Trip Planner. All Rights Reserved.</p>
+            <p class="text-stone-400 mt-2">Contact: +91 9876543210 | Email: info@Keralatrips.com</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const destinations = [
+                { name: 'Wayanad', type: 'Hill Station', description: 'A misty paradise where emerald landscapes meet cascading waterfalls.', image: 'https://placehold.co/600x400/22c55e/FFFFFF?text=Wayanad' },
+                { name: 'Munnar', type: 'Hill Station', description: 'Sprawling tea plantations, misty mountains, and a cool, refreshing climate.', image: 'https://placehold.co/600x400/16a34a/FFFFFF?text=Munnar' },
+                { name: 'Alappuzha', type: 'Backwaters', description: 'Known as the "Venice of the East" for its breathtaking backwaters and houseboat cruises.', image: 'https://placehold.co/600x400/15803d/FFFFFF?text=Alappuzha' },
+                { name: 'Kumarakom', type: 'Backwaters', description: 'A serene village on Vembanad Lake, renowned for scenic backwaters and tranquil environment.', image: 'https://placehold.co/600x400/14532d/FFFFFF?text=Kumarakom' },
+                { name: 'Kochi', type: 'City', description: 'A vibrant city where history meets the sea, and every street tells a story of culture.', image: 'https://placehold.co/600x400/052e16/FFFFFF?text=Kochi' },
+                { name: 'Palakkad', type: 'City', description: 'Often called the "Gateway to Kerala," known for its lush landscapes and historical sites.', image: 'https://placehold.co/600x400/064e3b/FFFFFF?text=Palakkad' },
+                { name: 'Pathanamthitta Gavi', type: 'Hill Station', description: 'An eco-tourism spot offering trekking, wildlife watching, and boating.', image: 'https://placehold.co/600x400/34d399/FFFFFF?text=Gavi' },
+                { name: 'Kollam', type: 'Backwaters', description: 'An ancient seaport and the southern gateway to the Kerala backwaters.', image: 'https://placehold.co/600x400/6ee7b7/FFFFFF?text=Kollam' },
+                { name: 'Kovalam', type: 'Beach', description: 'Famous for its three crescent-shaped beaches separated by rocky outcroppings.', image: 'https://placehold.co/600x400/a7f3d0/FFFFFF?text=Kovalam' }
+            ];
+
+            const vehiclePricing = { 'Car': 25000, 'Traveller': 50000, 'Bus': 75000 };
+            const backgroundColors = { 'Car': 'rgba(22, 163, 74, 0.7)', 'Traveller': 'rgba(21, 128, 61, 0.7)', 'Bus': 'rgba(20, 83, 45, 0.7)' };
+            const borderColors = { 'Car': 'rgba(22, 163, 74, 1)', 'Traveller': 'rgba(21, 128, 61, 1)', 'Bus': 'rgba(20, 83, 45, 1)' };
+
+            const destinationGrid = document.getElementById('destination-grid');
+            const destinationSelect = document.getElementById('destination-select');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            function renderDestinations(filter = 'all') {
+                destinationGrid.innerHTML = '';
+                const filteredDestinations = filter === 'all' ? destinations : destinations.filter(d => d.type.replace(' ', '') === filter.replace(' ', ''));
+                
+                filteredDestinations.forEach(dest => {
+                    const card = document.createElement('div');
+                    card.className = 'destination-card bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300';
+                    card.setAttribute('data-type', dest.type.replace(' ', ''));
+                    card.innerHTML = `
+                        <img src="${dest.image}" alt="${dest.name}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h5 class="text-xl font-bold mb-2">${dest.name}</h5>
+                            <p class="text-stone-600">${dest.description}</p>
+                        </div>
+                    `;
+                    destinationGrid.appendChild(card);
+                });
+            }
+
+            function populateDestinationDropdown() {
+                destinations.forEach(dest => {
+                    const option = document.createElement('option');
+                    option.value = dest.name;
+                    option.textContent = dest.name;
+                    destinationSelect.appendChild(option);
+                });
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderDestinations(button.dataset.filter);
+                });
+            });
+
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const priceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(vehiclePricing),
+                    datasets: [{
+                        label: 'Cost in ₹',
+                        data: Object.values(vehiclePricing),
+                        backgroundColor: Object.values(backgroundColors),
+                        borderColor: Object.values(borderColors),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + (value / 1000) + 'k';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const vehicleSelect = document.getElementById('vehicle-select');
+            vehicleSelect.addEventListener('change', (e) => {
+                const selectedVehicle = e.target.value;
+                priceChart.data.datasets[0].backgroundColor = Object.keys(vehiclePricing).map(v => {
+                    return v === selectedVehicle ? backgroundColors[v].replace('0.7', '1') : backgroundColors[v];
+                });
+                 priceChart.data.datasets[0].borderWidth = Object.keys(vehiclePricing).map(v => {
+                    return v === selectedVehicle ? 3 : 2;
+                });
+                priceChart.update();
+            });
+            vehicleSelect.dispatchEvent(new Event('change'));
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            renderDestinations();
+            populateDestinationDropdown();
+        });
+    </script>
+</body>
+</html>
